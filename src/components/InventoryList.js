@@ -265,14 +265,14 @@ const InventoryList = ({
           </ModalBody>
           <ModalFooter>
             <Button
-              colorScheme="blue"
+              colorScheme="green"
               mr={3}
               onClick={handleSellSubmit}
               isDisabled={saleData.quantity > selectedItem?.stock || saleData.quantity <= 0}
             >
               Confirm Sale
             </Button>
-            <Button colorScheme="red" mr={3} onClick={onClose}>
+            <Button colorScheme="orange" mr={3} onClick={onClose}>
               Cancel
             </Button>
           </ModalFooter>
