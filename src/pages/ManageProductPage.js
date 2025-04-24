@@ -66,15 +66,6 @@ const ManageProductPage = () => {
     console.log("Edit item:", item);
     // Implement edit functionality (e.g., open a modal for editing)
   };
-
-  const handleSell = async (id, quantity) => {
-    try {
-      await axios.put(`/api/inventory/items/${id}/sell`, { quantity });
-      toast({ title: "Item sold successfully", status: "success" });
-    } catch (error) {
-      toast({ title: "Error selling item", status: "error" });
-    }
-  };
   
   const handleAddStock = async (id, quantity) => {
     try {
@@ -96,15 +87,14 @@ const ManageProductPage = () => {
       <Sidebar onLogout={handleLogout} />
 
       {/* Main Content */}
-      <Container maxW="container.xl" py={4}>
-        <Heading mb={4} textAlign="center">
-          Manage Products
+      <Container maxW="container.xl" py={3}>
+        <Heading mb={3} textAlign="center">
+          Manage Stock
         </Heading>
         <InventoryList
           items={items}
           onDelete={handleDelete}
           onEdit={handleEdit}
-          onSell={handleSell}
           onAddStock={handleAddStock}
           categories={categories}
           brands={brands}

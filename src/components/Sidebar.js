@@ -55,7 +55,7 @@ const Sidebar = ({ onLogout }) => {
             width="100%"
             justifyContent="flex-start"
           >
-            Manage Products
+            Manage Stock
           </Button>
         </Link>
         <Link href="/manage-sales" style={{ textDecoration: "none", width: "100%" }}>

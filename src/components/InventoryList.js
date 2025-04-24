@@ -13,13 +13,12 @@ import {
   HStack,
   IconButton,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon, CheckIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 const InventoryList = ({
   items,
   onDelete,
   onEdit,
-  onSell,
   onAddStock,
   categories,
   brands,
@@ -30,7 +29,6 @@ const InventoryList = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
-  const [editValues, setEditValues] = useState({}); // To store edited values
 
   // Filter items based on search term, category, and brand
   const filteredItems = items.filter((item) => {
@@ -40,30 +38,6 @@ const InventoryList = ({
 
     return matchesSearch && matchesCategory && matchesBrand;
   });
-
-  // Handle input changes for editing
-  const handleEditChange = (id, field, value) => {
-    setEditValues((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        [field]: value,
-      },
-    }));
-  };
-
-  // Save the edited values
-  const handleSave = (id) => {
-    const updatedValues = editValues[id];
-    if (updatedValues) {
-      onEdit(id, updatedValues); // Call the onEdit function with the updated values
-      setEditValues((prev) => {
-        const newValues = { ...prev };
-        delete newValues[id];
-        return newValues;
-      });
-    }
-  };
 
   return (
     <Box>
@@ -129,7 +103,7 @@ const InventoryList = ({
             <Th>Price</Th>
             <Th>Stock</Th>
             <Th>Purchase From</Th>
-            <Th>Edit</Th> {/* New Edit Column */}
+            <Th>Brand</Th>
             <Th>Action</Th>
           </Tr>
         </Thead>
@@ -141,38 +115,9 @@ const InventoryList = ({
               <Td>{item.price}</Td>
               <Td>{item.stock}</Td>
               <Td>{item.seller?.name || "N/A"}</Td>
-              <Td>
-                {/* Edit Fields */}
-                <HStack spacing={2}>
-                  <Input
-                    size="sm"
-                    placeholder="Edit Price"
-                    value={editValues[item._id]?.price || ""}
-                    onChange={(e) => handleEditChange(item._id, "price", e.target.value)}
-                  />
-                  <Input
-                    size="sm"
-                    placeholder="Edit Stock"
-                    value={editValues[item._id]?.stock || ""}
-                    onChange={(e) => handleEditChange(item._id, "stock", e.target.value)}
-                  />
-                  <IconButton
-                    size="sm"
-                    icon={<CheckIcon />}
-                    colorScheme="green"
-                    onClick={() => handleSave(item._id)}
-                  />
-                </HStack>
-              </Td>
+              <Td>{item.brand?.name || "N/A"}</Td>
               <Td>
                 <HStack spacing={2}>
-                  <Button
-                    size="sm"
-                    colorScheme="blue"
-                    onClick={() => onSell(item)}
-                  >
-                    Sell
-                  </Button>
                   <Button
                     size="sm"
                     colorScheme="green"
@@ -184,7 +129,7 @@ const InventoryList = ({
                     size="sm"
                     icon={<EditIcon />}
                     colorScheme="yellow"
-                    onClick={() => console.log("Edit clicked")}
+                    onClick={() => onEdit(item)}
                   />
                   <IconButton
                     size="sm"
