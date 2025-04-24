@@ -12,6 +12,18 @@ import {
   Button,
   HStack,
   IconButton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  useDisclosure,
+  useToast,
+  Text
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
@@ -23,9 +35,56 @@ const InventoryList = ({
   categories,
   brands,
   onPageChange,
+  onSell,
   currentPage,
   totalPages,
 }) => {
+  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [saleData, setSaleData] = useState({
+    quantity: 1,
+    buyer: "",
+    date: new Date().toISOString().split('T')[0]
+  });
+
+  const handleSellClick = (item) => {
+    setSelectedItem(item);
+    onOpen();
+  };
+
+  const handleSellSubmit = () => {
+
+    if (saleData.quantity > selectedItem.stock) {
+      toast({
+        title: "Insufficient stock",
+        description: `Available stock: ${selectedItem.stock}`,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (saleData.quantity <= 0) {
+      toast({
+        title: "Invalid quantity",
+        description: "Quantity must be greater than 0",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    onSell(selectedItem._id, saleData);
+    onClose();
+    setSaleData({
+      quantity: 1,
+      buyer: "",
+      date: new Date().toISOString().split('T')[0]
+    });
+  };
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
@@ -120,6 +179,13 @@ const InventoryList = ({
                 <HStack spacing={2}>
                   <Button
                     size="sm"
+                    colorScheme="blue"
+                    onClick={() => handleSellClick(item)}
+                  >
+                    Sell
+                  </Button>
+                  <Button
+                    size="sm"
                     colorScheme="green"
                     onClick={() => onAddStock(item)}
                   >
@@ -143,6 +209,75 @@ const InventoryList = ({
           ))}
         </Tbody>
       </Table>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent bg="gray.800" color="white">
+          <ModalHeader>Sell {selectedItem?.name}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl mb={4} isInvalid={saleData.quantity > selectedItem?.stock}>
+              <FormLabel>Quantity</FormLabel>
+              <Input
+                type="number"
+                value={saleData.quantity}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value);
+                  if (value > selectedItem?.stock) {
+                    toast({
+                      title: "Warning",
+                      description: `Maximum available stock: ${selectedItem.stock}`,
+                      status: "warning",
+                      duration: 2000,
+                      isClosable: true,
+                    });
+                  }
+                  setSaleData({ ...saleData, quantity: value });
+                }}
+                min={1}
+                max={selectedItem?.stock}
+                bg="gray.700"
+              />
+              {saleData.quantity > selectedItem?.stock && (
+                <Text color="red.500" fontSize="sm" mt={1}>
+                  Insufficient stock available
+                </Text>
+              )}
+            </FormControl>
+            <FormControl mb={4}>
+              <FormLabel>Buyer</FormLabel>
+              <Input
+                value={saleData.buyer}
+                onChange={(e) => setSaleData({ ...saleData, buyer: e.target.value })}
+                placeholder="Enter buyer name"
+                bg="gray.700"
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Date</FormLabel>
+              <Input
+                type="date"
+                value={saleData.date}
+                onChange={(e) => setSaleData({ ...saleData, date: e.target.value })}
+                bg="gray.700"
+              />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={handleSellSubmit}
+              isDisabled={saleData.quantity > selectedItem?.stock || saleData.quantity <= 0}
+            >
+              Confirm Sale
+            </Button>
+            <Button colorScheme="red" mr={3} onClick={onClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
       {/* Pagination */}
       <HStack justifyContent="center" mt={4}>

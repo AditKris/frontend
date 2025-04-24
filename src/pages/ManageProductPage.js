@@ -66,13 +66,36 @@ const ManageProductPage = () => {
     console.log("Edit item:", item);
     // Implement edit functionality (e.g., open a modal for editing)
   };
-  
+
   const handleAddStock = async (id, quantity) => {
     try {
       await axios.put(`/api/inventory/items/${id}/add-stock`, { quantity });
       toast({ title: "Stock added successfully", status: "success" });
     } catch (error) {
       toast({ title: "Error adding stock", status: "error" });
+    }
+  };
+
+  const handleSell = async (id, saleData) => {
+    try {
+      await axios.put(`/api/inventory/items/${id}/sell`, saleData);
+      // Refresh the items list
+      const response = await axios.get(`/api/inventory/items?page=${currentPage}`);
+      setItems(response.data.items);
+      toast({
+        title: "Item sold successfully",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error selling item",
+        description: error.response?.data?.message || "An error occurred",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -95,6 +118,7 @@ const ManageProductPage = () => {
           items={items}
           onDelete={handleDelete}
           onEdit={handleEdit}
+          onSell={handleSell}
           onAddStock={handleAddStock}
           categories={categories}
           brands={brands}
