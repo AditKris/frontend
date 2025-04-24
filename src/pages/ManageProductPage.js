@@ -44,9 +44,14 @@ const ManageProductPage = () => {
   }, [currentPage]);
 
   const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this item?")) {
+      return;
+    }
+  
     try {
       await axios.delete(`/api/inventory/${id}`);
-      setItems(items.filter((item) => item._id !== id));
+      // Update local state to remove the deleted item
+      setItems(items.filter(item => item._id !== id));
       toast({
         title: "Item deleted successfully",
         status: "success",

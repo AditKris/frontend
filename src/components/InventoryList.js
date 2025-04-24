@@ -258,6 +258,7 @@ const InventoryList = ({
                     icon={<DeleteIcon />}
                     colorScheme="red"
                     onClick={() => onDelete(item._id)}
+                    aria-label="Delete Item"
                   />
                 </HStack>
               </Td>
