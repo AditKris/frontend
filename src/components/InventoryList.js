@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
-const InventoryList = ({
+const InventoryList = ({ 
   items,
   onDelete,
   onEdit,
@@ -40,10 +40,10 @@ const InventoryList = ({
   totalPages,
 }) => {
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {isOpen, onOpen, onClose } = useDisclosure();
   const [selectedItem, setSelectedItem] = useState(null);
   const [saleData, setSaleData] = useState({
-    quantity: 1,
+    quantity: '',
     buyer: "",
     date: new Date().toISOString().split('T')[0]
   });
@@ -98,19 +98,51 @@ const InventoryList = ({
     return matchesSearch && matchesCategory && matchesBrand;
   });
 
+  const { 
+    isOpen: isAddStockOpen, 
+    onOpen: onAddStockOpen, 
+    onClose: onAddStockClose 
+  } = useDisclosure();
+  const [selectedStockItem, setSelectedStockItem] = useState(null);
+  const [stockData, setStockData] = useState({
+    quantity: '',
+    date: new Date().toISOString().split('T')[0]
+  });
+
+  const handleAddStockClick = (item) => {
+    setSelectedStockItem(item);
+    onAddStockOpen();
+  };
+
+  const handleAddStockSubmit = () => {
+    if (stockData.quantity <= 0) {
+      toast({
+        title: "Invalid quantity",
+        description: "Quantity must be greater than 0",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    onAddStock(selectedStockItem._id, stockData);
+    onAddStockClose();
+    setStockData({
+      quantity: 1,
+      date: new Date().toISOString().split('T')[0]
+    });
+  };
+
   return (
     <Box>
-      {/* Filters */}
       <HStack spacing={4} mb={4}>
-        {/* Search by Product Name */}
         <Input
           placeholder="Search by Product Name"
           value={searchTerm}
           bg="gray.700"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-
-        {/* Filter by Category */}
         <Select
           placeholder="Filter by Category"
           value={selectedCategory}
@@ -130,8 +162,6 @@ const InventoryList = ({
             </option>
           ))}
         </Select>
-
-        {/* Filter by Brand */}
         <Select
           placeholder="Filter by Brand"
           value={selectedBrand}
@@ -152,8 +182,6 @@ const InventoryList = ({
           ))}
         </Select>
       </HStack>
-
-      {/* Product Table */}
       <Table variant="simple" size="sm">
         <Thead>
           <Tr>
@@ -187,7 +215,7 @@ const InventoryList = ({
                   <Button
                     size="sm"
                     colorScheme="green"
-                    onClick={() => onAddStock(item)}
+                    onClick={() => handleAddStockClick(item)}
                   >
                     Add Stock
                   </Button>
@@ -273,6 +301,61 @@ const InventoryList = ({
               Confirm Sale
             </Button>
             <Button colorScheme="orange" mr={3} onClick={onClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Add Stock Modal */}
+      <Modal isOpen={isAddStockOpen} onClose={onAddStockClose}>
+        <ModalOverlay />
+        <ModalContent bg="gray.800" color="white">
+          <ModalHeader>Add Stock: {selectedStockItem?.name}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl mb={4}>
+              <FormLabel>Quantity</FormLabel>
+              <Input
+                type="number"
+                value={stockData.quantity}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value);
+                  if (value <= 0) {
+                    toast({
+                      title: "Warning",
+                      description: "Quantity must be greater than 0",
+                      status: "warning",
+                      duration: 2000,
+                      isClosable: true,
+                    });
+                  }
+                  setStockData({ ...stockData, quantity: value });
+                }}
+                min={1}
+                bg="gray.700"
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Date</FormLabel>
+              <Input
+                type="date"
+                value={stockData.date}
+                onChange={(e) => setStockData({ ...stockData, date: e.target.value })}
+                bg="gray.700"
+              />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="green"
+              mr={3}
+              onClick={handleAddStockSubmit}
+              isDisabled={stockData.quantity <= 0}
+            >
+              Confirm Add Stock
+            </Button>
+            <Button colorScheme="orange" mr={3} onClick={onAddStockClose}>
               Cancel
             </Button>
           </ModalFooter>
