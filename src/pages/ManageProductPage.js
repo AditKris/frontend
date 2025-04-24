@@ -8,6 +8,7 @@ const ManageProductPage = () => {
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [sellers, setSellers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const toast = useToast();
@@ -25,12 +26,14 @@ const ManageProductPage = () => {
 
     const fetchFilters = async () => {
       try {
-        const [categoriesRes, brandsRes] = await Promise.all([
+        const [categoriesRes, brandsRes, sellersRes] = await Promise.all([
           axios.get("/api/inventory/categories"),
           axios.get("/api/inventory/brands"),
+          axios.get("/api/inventory/sellers"),
         ]);
         setCategories(categoriesRes.data);
         setBrands(brandsRes.data);
+        setSellers(sellersRes.data);
       } catch (error) {
         console.error("Error fetching filters:", error);
       }
@@ -62,9 +65,27 @@ const ManageProductPage = () => {
     }
   };
 
-  const handleEdit = (item) => {
-    console.log("Edit item:", item);
-    // Implement edit functionality (e.g., open a modal for editing)
+  const handleEdit = async (id, editData) => {
+    try {
+      await axios.put(`/api/inventory/${id}`, editData);
+      // Refresh the items list
+      const response = await axios.get(`/api/inventory/items?page=${currentPage}`);
+      setItems(response.data.items);
+      toast({
+        title: "Item updated successfully",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error updating item",
+        description: error.response?.data?.message || "An error occurred",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   const handleAddStock = async (id, stockData) => {
@@ -136,6 +157,7 @@ const ManageProductPage = () => {
           onAddStock={handleAddStock}
           categories={categories}
           brands={brands}
+          sellers={sellers}
           onPageChange={setCurrentPage}
           currentPage={currentPage}
           totalPages={totalPages}

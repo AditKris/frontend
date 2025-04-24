@@ -318,7 +318,6 @@ const InventoryPage = () => {
             </VStack>
           </Box>
 
-          {/* Create Seller, Category, Brand */}
           <VStack spacing={6}>
             <Box bg="gray.800" p={6} borderRadius="md" boxShadow="lg" width="full">
               <Heading size="md" mb={4}>

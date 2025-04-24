@@ -27,20 +27,21 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
-const InventoryList = ({ 
+const InventoryList = ({
   items,
   onDelete,
   onEdit,
   onAddStock,
   categories,
   brands,
+  sellers,
   onPageChange,
   onSell,
   currentPage,
   totalPages,
 }) => {
   const toast = useToast();
-  const {isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedItem, setSelectedItem] = useState(null);
   const [saleData, setSaleData] = useState({
     quantity: '',
@@ -98,10 +99,10 @@ const InventoryList = ({
     return matchesSearch && matchesCategory && matchesBrand;
   });
 
-  const { 
-    isOpen: isAddStockOpen, 
-    onOpen: onAddStockOpen, 
-    onClose: onAddStockClose 
+  const {
+    isOpen: isAddStockOpen,
+    onOpen: onAddStockOpen,
+    onClose: onAddStockClose
   } = useDisclosure();
   const [selectedStockItem, setSelectedStockItem] = useState(null);
   const [stockData, setStockData] = useState({
@@ -132,6 +133,33 @@ const InventoryList = ({
       quantity: 1,
       date: new Date().toISOString().split('T')[0]
     });
+  };
+
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose
+  } = useDisclosure();
+  const [editData, setEditData] = useState({
+    name: '',
+    price: '',
+    stock: '',
+    category: '',
+    seller: '',
+    brand: '',
+  });
+
+  const handleEditClick = (item) => {
+    setSelectedItem(item);
+    setEditData({
+      name: item.name,
+      price: item.price,
+      stock: item.stock,
+      category: item.category?.name || '',
+      seller: item.seller?.name || '',
+      brand: item.brand?.name || '',
+    });
+    onEditOpen();
   };
 
   return (
@@ -223,7 +251,7 @@ const InventoryList = ({
                     size="sm"
                     icon={<EditIcon />}
                     colorScheme="yellow"
-                    onClick={() => onEdit(item)}
+                    onClick={() => handleEditClick(item)}
                   />
                   <IconButton
                     size="sm"
@@ -307,7 +335,6 @@ const InventoryList = ({
         </ModalContent>
       </Modal>
 
-      {/* Add Stock Modal */}
       <Modal isOpen={isAddStockOpen} onClose={onAddStockClose}>
         <ModalOverlay />
         <ModalContent bg="gray.800" color="white">
@@ -362,7 +389,129 @@ const InventoryList = ({
         </ModalContent>
       </Modal>
 
-      {/* Pagination */}
+      <Modal isOpen={isEditOpen} onClose={onEditClose}>
+        <ModalOverlay />
+        <ModalContent bg="gray.800" color="white">
+          <ModalHeader>Edit Product: {selectedItem?.name}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl mb={4}>
+              <FormLabel>Product Name</FormLabel>
+              <Input
+                value={editData.name}
+                onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                placeholder="Enter product name"
+                bg="gray.700"
+              />
+            </FormControl>
+
+            <FormControl mb={4}>
+              <FormLabel>Price</FormLabel>
+              <Input
+                type="number"
+                value={editData.price}
+                onChange={(e) => setEditData({ ...editData, price: parseFloat(e.target.value) })}
+                placeholder="Enter price"
+                bg="gray.700"
+              />
+            </FormControl>
+
+            <FormControl mb={4}>
+              <FormLabel>Stock</FormLabel>
+              <Input
+                type="number"
+                value={editData.stock}
+                onChange={(e) => setEditData({ ...editData, stock: parseInt(e.target.value) })}
+                placeholder="Enter stock"
+                bg="gray.700"
+              />
+            </FormControl>
+
+            <FormControl mb={4}>
+              <FormLabel>Category</FormLabel>
+              <Select
+                value={editData.category}
+                onChange={(e) => setEditData({ ...editData, category: e.target.value })}
+                bg="gray.700"
+              >
+                {categories.map((category) => (
+                  <option
+                    key={category._id}
+                    value={category.name}
+                    style={{
+                      backgroundColor: "#2D3748",
+                      color: "white",
+                    }}
+                  >
+                    {category.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl mb={4}>
+              <FormLabel>Purchase From</FormLabel>
+              <Select
+                value={editData.seller}
+                onChange={(e) => setEditData({ ...editData, seller: e.target.value })}
+                bg="gray.700"
+              >
+                {sellers.map((seller) => (
+                  <option
+                    key={seller._id}
+                    value={seller.name}
+                    style={{
+                      backgroundColor: "#2D3748",
+                      color: "white",
+                    }}
+                  >
+                    {seller.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl mb={4}>
+              <FormLabel>Brand</FormLabel>
+              <Select
+                value={editData.brand}
+                onChange={(e) => setEditData({ ...editData, brand: e.target.value })}
+                bg="gray.700"
+              >
+                {brands.map((brand) => (
+                  <option
+                    key={brand._id}
+                    value={brand.name}
+                    style={{
+                      backgroundColor: "#2D3748",
+                      color: "white",
+                    }}
+                  >
+                    {brand.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => {
+                onEdit(selectedItem._id, editData);
+                onEditClose();
+              }}
+            >
+              Save Changes
+            </Button>
+            <Button colorScheme="orange" onClick={onEditClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+
       <HStack justifyContent="center" mt={4}>
         {Array.from({ length: totalPages }, (_, index) => (
           <Button
