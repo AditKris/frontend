@@ -164,7 +164,7 @@ const InventoryPage = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
   };
-
+  
   return (
     <Box display="flex" bg="gray.900" color="white" minH="100vh">
       {/* Sidebar */}

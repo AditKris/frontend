@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { Box, FormControl, FormLabel, Input, Button, VStack, useToast, Text, Link } from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, Input, Button, VStack, useToast, Text} from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const toast = useToast();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,7 +18,7 @@ const LoginPage = () => {
       console.log("Login response:", response.data);
       localStorage.setItem("token", response.data.token);
       toast({ title: "Login successful", status: "success", duration: 3000, isClosable: true });
-      navigate("/inventory"); // Navigate to InventoryPage on success
+      navigate("/dashboard"); 
     } catch (error) {
       console.error("Login error:", error.response?.data);
       toast({ title: "Login failed", status: "error", duration: 3000, isClosable: true });

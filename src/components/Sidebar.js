@@ -1,11 +1,11 @@
 import React from "react";
 import { Box, VStack, Text, Button, Icon, Link } from "@chakra-ui/react";
-import { FaTachometerAlt, FaBox, FaChartLine, FaUsers, FaShoppingCart, FaUser, FaSignOutAlt } from "react-icons/fa";
+import { FaTachometerAlt, FaBox, FaChartLine,   FaSignOutAlt } from "react-icons/fa";
 
 const Sidebar = ({ onLogout }) => {
   return (
     <Box
-      bg="gray.900" // Updated to match the darker theme
+      bg="gray.900" 
       color="white"
       minH="100vh"
       width="250px"
@@ -14,7 +14,6 @@ const Sidebar = ({ onLogout }) => {
       flexDirection="column"
       justifyContent="space-between"
     >
-      {/* Top Section */}
       <VStack align="start" spacing={4}>
         <Text fontSize="2xl" fontWeight="bold">
           BR BR PATAPIM
@@ -22,8 +21,8 @@ const Sidebar = ({ onLogout }) => {
         <Link href="/dashboard" style={{ textDecoration: "none", width: "100%" }}>
           <Button
             leftIcon={<Icon as={FaTachometerAlt} />}
-            bg="gray.800" // Updated button background
-            _hover={{ bg: "gray.700" }} // Hover effect
+            bg="gray.800"
+            _hover={{ bg: "gray.700" }}
             color="white"
             variant="solid"
             width="100%"
@@ -35,8 +34,8 @@ const Sidebar = ({ onLogout }) => {
         <Link href="/inventory" style={{ textDecoration: "none", width: "100%" }}>
           <Button
             leftIcon={<Icon as={FaBox} />}
-            bg="gray.800" // Updated button background
-            _hover={{ bg: "gray.700" }} // Hover effect
+            bg="gray.800" 
+            _hover={{ bg: "gray.700" }}
             color="white"
             variant="ghost"
             width="100%"
@@ -48,8 +47,8 @@ const Sidebar = ({ onLogout }) => {
         <Link href="/manage-products" style={{ textDecoration: "none", width: "100%" }}>
           <Button
             leftIcon={<Icon as={FaBox} />}
-            bg="gray.800" // Updated button background
-            _hover={{ bg: "gray.700" }} // Hover effect
+            bg="gray.800" 
+            _hover={{ bg: "gray.700" }} 
             color="white"
             variant="ghost"
             width="100%"
@@ -61,8 +60,8 @@ const Sidebar = ({ onLogout }) => {
         <Link href="/manage-sales" style={{ textDecoration: "none", width: "100%" }}>
           <Button
             leftIcon={<Icon as={FaChartLine} />}
-            bg="gray.800" // Updated button background
-            _hover={{ bg: "gray.700" }} // Hover effect
+            bg="gray.800" 
+            _hover={{ bg: "gray.700" }} 
             color="white"
             variant="ghost"
             width="100%"
@@ -71,48 +70,7 @@ const Sidebar = ({ onLogout }) => {
             Manage Sales
           </Button>
         </Link>
-        <Link href="/manage-sellers" style={{ textDecoration: "none", width: "100%" }}>
-          <Button
-            leftIcon={<Icon as={FaUsers} />}
-            bg="gray.800" // Updated button background
-            _hover={{ bg: "gray.700" }} // Hover effect
-            color="white"
-            variant="ghost"
-            width="100%"
-            justifyContent="flex-start"
-          >
-            Manage Sellers
-          </Button>
-        </Link>
-        <Link href="/manage-purchases" style={{ textDecoration: "none", width: "100%" }}>
-          <Button
-            leftIcon={<Icon as={FaShoppingCart} />}
-            bg="gray.800" // Updated button background
-            _hover={{ bg: "gray.700" }} // Hover effect
-            color="white"
-            variant="ghost"
-            width="100%"
-            justifyContent="flex-start"
-          >
-            Manage Purchases
-          </Button>
-        </Link>
-        <Link href="/profile" style={{ textDecoration: "none", width: "100%" }}>
-          <Button
-            leftIcon={<Icon as={FaUser} />}
-            bg="gray.800" // Updated button background
-            _hover={{ bg: "gray.700" }} // Hover effect
-            color="white"
-            variant="ghost"
-            width="100%"
-            justifyContent="flex-start"
-          >
-            Profile
-          </Button>
-        </Link>
       </VStack>
-
-      {/* Bottom Section */}
       <Button
         leftIcon={<Icon as={FaSignOutAlt} />}
         bg="blue.500" // Updated logout button color
