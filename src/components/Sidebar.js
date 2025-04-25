@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, VStack, Text, Button, Icon, Link } from "@chakra-ui/react";
+import { Box, VStack, Text, Button, Icon} from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import { FaTachometerAlt, FaBox, FaChartLine,   FaSignOutAlt } from "react-icons/fa";
 
 const Sidebar = ({ onLogout }) => {
@@ -16,9 +17,9 @@ const Sidebar = ({ onLogout }) => {
     >
       <VStack align="start" spacing={4}>
         <Text fontSize="2xl" fontWeight="bold">
-          BR BR PATAPIM
+          IMS
         </Text>
-        <Link href="/dashboard" style={{ textDecoration: "none", width: "100%" }}>
+        <Link to="/dashboard" style={{ textDecoration: "none", width: "100%" }}>
           <Button
             leftIcon={<Icon as={FaTachometerAlt} />}
             bg="gray.800"
@@ -31,7 +32,7 @@ const Sidebar = ({ onLogout }) => {
             Dashboard
           </Button>
         </Link>
-        <Link href="/inventory" style={{ textDecoration: "none", width: "100%" }}>
+        <Link to="/inventory" style={{ textDecoration: "none", width: "100%" }}>
           <Button
             leftIcon={<Icon as={FaBox} />}
             bg="gray.800" 
@@ -44,7 +45,7 @@ const Sidebar = ({ onLogout }) => {
             Add Product
           </Button>
         </Link>
-        <Link href="/manage-products" style={{ textDecoration: "none", width: "100%" }}>
+        <Link to="/manage-products" style={{ textDecoration: "none", width: "100%" }}>
           <Button
             leftIcon={<Icon as={FaBox} />}
             bg="gray.800" 
@@ -57,7 +58,7 @@ const Sidebar = ({ onLogout }) => {
             Manage Stock
           </Button>
         </Link>
-        <Link href="/manage-sales" style={{ textDecoration: "none", width: "100%" }}>
+        <Link to="/manage-sales" style={{ textDecoration: "none", width: "100%" }}>
           <Button
             leftIcon={<Icon as={FaChartLine} />}
             bg="gray.800" 
@@ -73,8 +74,8 @@ const Sidebar = ({ onLogout }) => {
       </VStack>
       <Button
         leftIcon={<Icon as={FaSignOutAlt} />}
-        bg="blue.500" // Updated logout button color
-        _hover={{ bg: "blue.400" }} // Hover effect
+        bg="blue.500" 
+        _hover={{ bg: "blue.400" }} 
         color="white"
         variant="solid"
         width="100%"
