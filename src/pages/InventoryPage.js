@@ -33,7 +33,7 @@ const InventoryPage = () => {
   const [newBrand, setNewBrand] = useState("");
   const toast = useToast();
 
-  // Fetch sellers, categories, and brands from the backend
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -103,8 +103,8 @@ const InventoryPage = () => {
         duration: 3000,
         isClosable: true,
       });
-      setSellers([...sellers, response.data.seller]); // Add new seller to the dropdown
-      setNewSeller(""); // Clear the input field
+      setSellers([...sellers, response.data.seller]); 
+      setNewSeller(""); 
     } catch (error) {
       toast({
         title: "Error creating seller",
@@ -125,8 +125,8 @@ const InventoryPage = () => {
         duration: 3000,
         isClosable: true,
       });
-      setCategories([...categories, response.data.category]); // Add new category to the dropdown
-      setNewCategory(""); // Clear the input field
+      setCategories([...categories, response.data.category]); 
+      setNewCategory(""); 
     } catch (error) {
       toast({
         title: "Error creating category",
@@ -147,8 +147,8 @@ const InventoryPage = () => {
         duration: 3000,
         isClosable: true,
       });
-      setBrands([...brands, response.data.brand]); // Add new brand to the dropdown
-      setNewBrand(""); // Clear the input field
+      setBrands([...brands, response.data.brand]); 
+      setNewBrand(""); 
     } catch (error) {
       toast({
         title: "Error creating brand",
@@ -164,19 +164,19 @@ const InventoryPage = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
   };
-  
+
   return (
     <Box display="flex" bg="gray.900" color="white" minH="100vh">
-      {/* Sidebar */}
+      {}
       <Sidebar onLogout={handleLogout} />
 
-      {/* Main Content */}
+      {}
       <Container maxW="container.xl" py={3}>
         <Heading mb={3} textAlign="center">
           ADD NEW PRODUCT
         </Heading>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
-          {/* Add Product Form */}
+          {}
           <Box bg="gray.800" p={6} borderRadius="md" boxShadow="lg">
             <VStack spacing={4}>
               <FormControl isRequired>
@@ -225,19 +225,19 @@ const InventoryPage = () => {
                   value={productData.seller}
                   onChange={handleInputChange}
                   placeholder="Select Seller"
-                  color={"white"} // Text color
-                  bg="gray.700" // Dropdown background// Text color
+                  color={"white"} 
+                  bg="gray.700" 
                   borderColor="gray.600"
                   _hover={{ borderColor: "gray.500" }}
-                  _focus={{ borderColor: "blue.500" }}// Placeholder text color
+                  _focus={{ borderColor: "blue.500" }}
                 >
                   {sellers.map((seller) => (
                     <option
                       key={seller._id}
                       value={seller.name}
                       style={{
-                        backgroundColor: "#2D3748", // Dark background for options
-                        color: "white", // White text for options
+                        backgroundColor: "#2D3748", 
+                        color: "white", 
                       }}
                     >
                       {seller.name}

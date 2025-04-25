@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { Box, FormControl, FormLabel, Input, Button, VStack, useToast, Text, Link } from "@chakra-ui/react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const toast = useToast();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       await axios.post("/api/auth/register", { username, password });
       toast({ title: "Registration successful", status: "success", duration: 3000, isClosable: true });
-      navigate("/login"); // Navigate to LoginPage on success
+      navigate("/login"); 
     } catch (error) {
       toast({ title: "Registration failed", status: "error", duration: 3000, isClosable: true });
     }

@@ -50,7 +50,7 @@ const ManageProductPage = () => {
   
     try {
       await axios.delete(`/api/inventory/${id}`);
-      // Update local state to remove the deleted item
+      
       setItems(items.filter(item => item._id !== id));
       toast({
         title: "Item deleted successfully",
@@ -73,7 +73,7 @@ const ManageProductPage = () => {
   const handleEdit = async (id, editData) => {
     try {
       await axios.put(`/api/inventory/${id}`, editData);
-      // Refresh the items list
+      
       const response = await axios.get(`/api/inventory/items?page=${currentPage}`);
       setItems(response.data.items);
       toast({
@@ -96,7 +96,7 @@ const ManageProductPage = () => {
   const handleAddStock = async (id, stockData) => {
     try {
       await axios.put(`/api/inventory/items/${id}/add-stock`, stockData);
-      // Refresh the items list
+      
       const response = await axios.get(`/api/inventory/items?page=${currentPage}`);
       setItems(response.data.items);
       toast({
