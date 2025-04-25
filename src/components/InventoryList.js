@@ -213,13 +213,13 @@ const InventoryList = ({
       <Table variant="simple" size="sm">
         <Thead>
           <Tr>
-            <Th>Product Name</Th>
-            <Th>Category</Th>
-            <Th>Price</Th>
-            <Th>Stock</Th>
-            <Th>Purchase From</Th>
-            <Th>Brand</Th>
-            <Th>Action</Th>
+            <Th color="gray.400">Product Name</Th>
+            <Th color="gray.400">Category</Th>
+            <Th color="gray.400">Price</Th>
+            <Th color="gray.400">Stock</Th>
+            <Th color="gray.400">Purchase From</Th>
+            <Th color="gray.400">Brand</Th>
+            <Th color="gray.400">Action</Th>
           </Tr>
         </Thead>
         <Tbody>

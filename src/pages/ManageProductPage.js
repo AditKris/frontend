@@ -119,7 +119,6 @@ const ManageProductPage = () => {
   const handleSell = async (id, saleData) => {
     try {
       await axios.put(`/api/inventory/items/${id}/sell`, saleData);
-      // Refresh the items list
       const response = await axios.get(`/api/inventory/items?page=${currentPage}`);
       setItems(response.data.items);
       toast({
@@ -146,10 +145,7 @@ const ManageProductPage = () => {
 
   return (
     <Box display="flex" bg="gray.900" color="white" minH="100vh">
-      {/* Sidebar */}
       <Sidebar onLogout={handleLogout} />
-
-      {/* Main Content */}
       <Container maxW="container.xl" py={3}>
         <Heading mb={3} textAlign="center">
           Manage Stock
