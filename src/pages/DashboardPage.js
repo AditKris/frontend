@@ -111,9 +111,9 @@ const DashboardPage = () => {
 
   return (
     <Box display="flex" bg="gray.900" color="white" minH="100vh">
-      <Sidebar />
-      <Container maxW="container.xl" py={5}>
-        <Heading mb={6}>Dashboard</Heading>
+      <Sidebar/>
+      <Container maxW="container.xl" py={3}>
+        <Heading mb={3} textAlign="center">Dashboard</Heading>
         
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mb={8}>
           <Stat

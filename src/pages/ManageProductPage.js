@@ -138,14 +138,9 @@ const ManageProductPage = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-  };
-
   return (
     <Box display="flex" bg="gray.900" color="white" minH="100vh">
-      <Sidebar onLogout={handleLogout} />
+      <Sidebar/>
       <Container maxW="container.xl" py={3}>
         <Heading mb={3} textAlign="center">
           Manage Stock

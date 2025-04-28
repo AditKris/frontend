@@ -79,7 +79,7 @@ const LoginPage = () => {
         </Box>
         <Text mt={4}>
           Don't have an account?{" "}
-          <Link href="/register" color="blue.400">
+          <Link to="/register" color="blue.400">
             Register Here
           </Link>
         </Text>

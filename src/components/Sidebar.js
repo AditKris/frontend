@@ -1,9 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, VStack, Text, Button, Icon} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { FaTachometerAlt, FaBox, FaChartLine,   FaSignOutAlt } from "react-icons/fa";
 
-const Sidebar = ({ onLogout }) => {
+const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   return (
     <Box
       bg="gray.900" 
@@ -79,7 +86,7 @@ const Sidebar = ({ onLogout }) => {
         color="white"
         variant="solid"
         width="100%"
-        onClick={onLogout}
+        onClick={handleLogout}
       >
         Logout
       </Button>

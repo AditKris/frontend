@@ -496,7 +496,7 @@ const InventoryList = ({
           </ModalBody>
           <ModalFooter>
             <Button
-              colorScheme="blue"
+              colorScheme="green"
               mr={3}
               onClick={() => {
                 onEdit(selectedItem._id, editData);

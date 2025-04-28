@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { 
-  Box, 
-  Table, 
-  Thead, 
-  Tbody, 
-  Tr, 
-  Th, 
-  Td, 
+import {
+  Box,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
   Heading,
   Spinner,
   Text,
@@ -47,8 +47,9 @@ const ManageSalesPage = () => {
 
   const filteredSales = sales.filter(sale => {
     const matchesSearch = sale.itemName.toLowerCase().includes(searchTerm.toLowerCase());
+    const saleDate = new Date(sale.date).toISOString().split('T')[0];
     const matchesDate = !selectedDate || sale.date.includes(selectedDate);
-    return matchesSearch && matchesDate;
+    return matchesSearch && matchesDate && saleDate;
   });
 
   if (isLoading) {
@@ -104,17 +105,12 @@ const ManageSalesPage = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-  };
-
   return (
     <Box display="flex" bg="gray.900" color="white" minH="100vh">
-      <Sidebar onLogout={handleLogout} />
+      <Sidebar/>
       <Container maxW="container.xl" py={3}>
-        <Heading mb={3}>Manage Sales</Heading>
-        
+        <Heading mb={3} textAlign="center">Manage Sales</Heading>
+
         <HStack spacing={4} mb={4}>
           <Input
             placeholder="Search by Product Name"
@@ -144,7 +140,13 @@ const ManageSalesPage = () => {
           <Tbody>
             {filteredSales.map((sale) => (
               <Tr key={sale._id}>
-                <Td>{new Date(sale.date).toLocaleDateString()}</Td>
+                <Td>
+                  {new Date(sale.date).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                  })}
+                </Td>
                 <Td>{sale.itemName}</Td>
                 <Td>Rp {sale.price.toLocaleString()}</Td>
                 <Td>{sale.quantity}</Td>
